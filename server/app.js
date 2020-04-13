@@ -1,6 +1,7 @@
 //Lets import all the dependencies & middlewars here
 import express from 'express';
 import bodyParser from 'body-parser';
+import mongoose from 'mongoose';
 
 //custom imports
 import { userController } from './controller';
@@ -20,4 +21,7 @@ const PORT = process.env.PORT? process.env.PORT : 8080;
 //start the server
 app.listen(PORT, ()=>{
     console.log(`Server is running on port ${PORT}`);
+    mongoose.connect("mongodb://localhost/test").then(() =>{
+        console.log("Connected to mongoDB at port 27017");
+    });
 });
