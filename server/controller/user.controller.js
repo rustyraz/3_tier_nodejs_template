@@ -16,6 +16,10 @@ userController.get('/', (req, res) =>{
     });    
 });
 
+/***
+ * GET/:id
+ * retrieve and return a user using the ID in the User model
+*/
 userController.get('/:id', (req, res) =>{
     const id = req.params.id; //DO SOME VALIDATION HERE
     User.findById(id, (err, result) =>{
@@ -52,6 +56,55 @@ userController.post('/register', (req, res) => {
                 errorFound: err
             });
         });
+});
+
+/***
+ * PUT/:id
+ * update using the ID in the User model
+*/
+userController.put('/:id', (req, res) => {
+    const id = req.params.id;
+    const { name } = req.body;
+
+    User.updateOne({_id: id}, {name:name}, (err, result) => {
+        if(err){
+            res.status(400).json({
+                error: true,
+                message: "Error occured while trying to update",
+                err
+            });
+        }else{
+            res.status(200).json({
+                success: true,
+                data: result
+            });
+        }
+    });
+});
+
+
+/***
+ * DELETE/:id
+ * delete user by ID in the User model
+*/
+
+userController.delete('/:id', (req, res)=>{
+    const id = req.params.id; // VALIDATE IF USER CAN DELETE AND IF THIS ID IS VALID
+    User.deleteOne({_id:id}, (err, result) => {
+        if(err){
+            res.status(400).json({
+                error: true,
+                message: "Error occured while trying to delete",
+                err
+            });
+        }else{
+            res.status(200).json({
+                success: true,
+                data: result
+            });
+        }
+
+    });
 });
 
 export default userController;
