@@ -1,5 +1,7 @@
-import userController from './user.controller';
+import userController from './user'
+import homeController from './home'
 
 export {
-    userController
+  homeController,
+  userController
 }

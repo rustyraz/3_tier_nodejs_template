@@ -11,10 +11,13 @@
   "author": "Peter Ngerere",
   "license": "ISC",
   "dependencies": {
+    "@hapi/joi": "^17.1.1",
     "body-parser": "^1.19.0",
     "esm": "^3.2.25",
     "express": "^4.17.1",
+    "express-promise-router": "^3.0.3",
     "mongoose": "^5.9.9",
+    "morgan": "^1.10.0",
     "nodemon": "^2.0.3",
     "prettier": "^2.0.4",
     "sha256": "^0.2.0"
