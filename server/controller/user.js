@@ -26,7 +26,7 @@ export default {
      * retrieve and return a user using the ID in the User model
     */
   getUserById: async (req, res) => {
-    const id = req.params.id // DO SOME VALIDATION HERE
+    const id = req.value.validParams.id
     try {
       const userData = await User.findById(id)
       if (userData) {
@@ -47,8 +47,7 @@ export default {
      * Future improvements will be done like VALIDATION
     */
   registerUser: async (req, res) => {
-    // we need to do a validation
-    const { email, password } = req.body
+    const { email, password } = req.value.validBody
 
     const userData = {
       email,
@@ -77,8 +76,8 @@ export default {
      * update using the ID in the User model
     */
   patchUserDetails: async (req, res) => {
-    const id = req.params.id
-    const updateData = { name: req.body.name }
+    const id = req.value.validBody.id
+    const updateData = { name: req.value.validBody.name }
     try {
       const updateUser = await User.findByIdAndUpdate(id, updateData, { new: true })
       if (updateUser) {
@@ -99,7 +98,7 @@ export default {
      * delete user by ID in the User model
     */
   deleteUserById: (req, res) => {
-    const id = req.params.id // VALIDATE IF USER CAN DELETE AND IF THIS ID IS VALID
+    const id = req.value.validParams.id // VALIDATE IF USER CAN DELETE AND IF THIS ID IS VALID
     User.deleteOne({ _id: id }, (err, result) => {
       if (err) {
         res.status(400).json({
@@ -120,12 +119,12 @@ export default {
    * post a new investements
    */
   newUserInvestments: async (req, res) => {
-    const userId = req.params.id
+    const userId = req.value.validParams.id
     try {
       // get the user using the id
       const user = await User.findById(userId)
       // create a new investment
-      const newInvestment = new Investment(req.body)
+      const newInvestment = new Investment(req.value.validBody)
       // assign investment to the user
       newInvestment.owner = user
       // save the investment
@@ -148,7 +147,7 @@ export default {
    * Get the investments under the user
    */
   getUserInvestments: async (req, res) => {
-    const userId = req.params.id
+    const userId = req.value.validParams.id
     try {
       const user = await User.findById(userId).populate('investments')
       res.status(200).json({
