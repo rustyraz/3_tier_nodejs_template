@@ -5,7 +5,7 @@ import mongoose from 'mongoose'
 // import logger from 'morgan'
 
 // custom imports
-import { homeRoute, userRoute } from './routes'
+import { homeRoute, userRoute, investmentRoute } from './routes'
 
 // Initiate the Express app
 const app = express()
@@ -19,6 +19,7 @@ app.use(logger('dev'))
 // use all the controllers (APIs) here
 app.use('/', homeRoute)
 app.use('/users', userRoute)
+app.use('/investments', investmentRoute)
 
 const PORT = process.env.PORT ? process.env.PORT : 8080
 const dbName = 'test'
