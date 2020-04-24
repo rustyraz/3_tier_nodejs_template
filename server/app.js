@@ -22,7 +22,8 @@ app.use('/users', userRoute)
 app.use('/investments', investmentRoute)
 
 const PORT = process.env.PORT ? process.env.PORT : 8080
-const dbName = 'test'
+const dbName = 'test' // this can be updated to check the env file
+
 // start the server
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`)
@@ -30,4 +31,5 @@ app.listen(PORT, () => {
   mongoose.connect(`mongodb://localhost/${dbName}`).then(() => {
     console.log('Connected to mongoDB at port 27017')
   })
+  mongoose.set('useCreateIndex', true)
 })

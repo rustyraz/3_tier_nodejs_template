@@ -54,10 +54,9 @@ export default {
       hashedPassword: sha256(password) // we will use a better module for this
     }
 
-    const newUser = new User(userData)
-
     try {
-      const saveUser = newUser.save()
+      const newUser = new User(userData)
+      const saveUser = await newUser.save()
       if (saveUser) {
         res.status(201).json({
           success: true,
@@ -67,8 +66,11 @@ export default {
         res.status(400).send('Something went wrong')
       }
     } catch (error) {
-      console.log(error)
-      res.status(404).send('An error occured')
+      const errorMsg = (error.errors && error.errors[Object.keys(error.errors)[0]].message) ? error.errors[Object.keys(error.errors)[0]].message : null
+      res.status(400).json({
+        error: true,
+        message: errorMsg || 'An error occured when trying to save the data'
+      })
     }
   },
   /***

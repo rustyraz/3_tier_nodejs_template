@@ -42,12 +42,22 @@ module.exports = {
     patchUserSchema: Joi.object({
       name: Joi.string().required().min(3)
     }),
+    // When creating a new investment and the owner id is passed via req.params and not the body
     newInvestmentSchema: Joi.object({
       name: Joi.string().min(3).required(),
       initialCapital: Joi.number().integer().required(),
       description: Joi.string(),
       profit: Joi.number().integer()
     }),
+    // when creating a new investment and the owner id is passed in the body
+    newInvestmentSchemaWithOwner: Joi.object({
+      name: Joi.string().min(3).required(),
+      initialCapital: Joi.number().integer().required(),
+      description: Joi.string(),
+      profit: Joi.number().integer(),
+      owner: Joi.string().pattern(new RegExp('^[0-9a-fA-F]{24}$')).required()
+    }),
+    // for validating the mongodb id passed
     idSchema: Joi.object({
       id: Joi.string().pattern(new RegExp('^[0-9a-fA-F]{24}$')).required()
     })
