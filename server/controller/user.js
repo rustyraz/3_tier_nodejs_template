@@ -8,7 +8,7 @@ export default {
 */
   getUser: async (req, res, next) => {
     try {
-      const userData = await User.find({})
+      const userData = await User.find({}).select('email name investments')
       if (userData) {
         res.status(201).json({
           success: true,
@@ -28,7 +28,7 @@ export default {
   getUserById: async (req, res) => {
     const id = req.value.validParams.id
     try {
-      const userData = await User.findById(id)
+      const userData = await User.findById(id).select('email name investments')
       if (userData) {
         res.status(201).json({
           success: true,
@@ -99,22 +99,26 @@ export default {
      * deleteUser
      * delete user by ID in the User model
     */
-  deleteUserById: (req, res) => {
-    const id = req.value.validParams.id // VALIDATE IF USER CAN DELETE AND IF THIS ID IS VALID
-    User.deleteOne({ _id: id }, (err, result) => {
-      if (err) {
-        res.status(400).json({
-          error: true,
-          message: 'Error occured while trying to delete',
-          err
-        })
-      } else {
+  deleteUserById: async (req, res) => {
+    const id = req.value.validParams.id
+    try {
+      const deleteUser = await User.findByIdAndDelete(id)
+      if (deleteUser) {
         res.status(200).json({
           success: true,
-          data: result
+          message: 'User deleted successfully'
+        })
+      } else {
+        res.status(400).json({
+          error: true,
+          message: 'Something went wrong while trying to delete'
         })
       }
-    })
+    } catch (error) {
+      res.status(400).json({
+        error: 'Could not delete that user'
+      })
+    }
   },
   /***
    * newUserInvestments
@@ -124,7 +128,7 @@ export default {
     const userId = req.value.validParams.id
     try {
       // get the user using the id
-      const user = await User.findById(userId)
+      const user = await User.findById(userId).select('email name investments')
       // create a new investment
       const newInvestment = new Investment(req.value.validBody)
       // assign investment to the user

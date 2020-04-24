@@ -2,6 +2,7 @@
 import express from 'express'
 import bodyParser from 'body-parser'
 import mongoose from 'mongoose'
+import helmet from 'helmet'
 // import logger from 'morgan'
 
 // custom imports
@@ -12,6 +13,7 @@ const app = express()
 const logger = require('morgan')
 
 // use the dependencies here
+app.use(helmet())
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(logger('dev'))
